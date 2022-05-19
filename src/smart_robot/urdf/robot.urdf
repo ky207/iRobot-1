@@ -1,0 +1,151 @@
+<?xml version="1.0"?> 
+<robot name="AIrobot">
+	<link name="base">
+		<visual>
+		  <geometry>
+			<box size="4 2 2"/>
+		  </geometry>
+		  <origin rpy="0 0 0" xyz="0 0 1.7"/>
+		  <material name="yellow">
+		  	<color rgba="1 0.4 0 1"/>
+		  </material>
+		</visual>
+	</link>
+	<link name="arm1">
+		<visual>
+		  <geometry>
+			<box size="0.5 0.5 3"/>
+		  </geometry>
+		  <origin rpy="0 0 0" xyz="0 0 1.5"/>
+		  <material name="green">
+		  	<color rgba="0 1 0 1"/>
+		  </material>
+		</visual>
+	</link>
+	<link name="arm2">
+		<visual>
+		  <geometry>
+			<box size="0.5 0.5 3"/>
+		  </geometry>
+		  <origin rpy="0 0 0" xyz="0 0 1.5"/>
+		  <material name="blue">
+		  	<color rgba="0 0 1 1"/>
+		  </material>
+		</visual>
+	</link>
+	<link name="arm3">
+		<visual>
+		  <geometry>
+			<box size="0.5 0.5 2"/>
+		  </geometry>
+		  <origin rpy="0 0 0" xyz="0 0 1"/>
+		</visual>
+	</link>
+	<joint name="joint0" type="continuous">
+		<parent link="base"/>
+		<child link="arm1"/>
+		<origin rpy="0 0 0" xyz="1 0 2"/>
+		<axis xyz="0 1 0" />
+	</joint>
+	<joint name="joint1" type="continuous">
+		<parent link="arm1"/>
+		<child link="arm2"/>
+		<origin rpy="0 0 0" xyz="0 0 3"/>
+		<axis xyz="0 1 0" />
+	</joint>	
+	<joint name="joint2" type="continuous">
+		<parent link="arm2"/>
+		<child link="arm3"/>
+		<origin rpy="0 0 0" xyz="0 0 3"/>
+		<axis xyz="0 1 0" />
+	</joint>
+
+
+
+	<link name="right_front_wheel">
+		<visual>
+		  <geometry>
+			<cylinder length="0.5" radius="0.5"/>
+		  </geometry>
+		  
+		  <material name="black">
+		  	<color rgba="0 0 0 1"/>
+		  </material>
+		</visual>
+	</link>
+	<joint name="base_right_wheel_joint" type="continuous">
+		<parent link="base"/>
+		<child link="right_front_wheel"/>
+		<origin rpy="1.57075 0 0" xyz="1 -1.0 0.4"/>
+		<axis xyz="0 0 1" />
+	</joint>
+	<link name="left_front_wheel">
+		<visual>
+		  <geometry>
+			<cylinder length="0.5" radius="0.5"/>
+		  </geometry>
+		  
+		  <material name="black">
+		  	<color rgba="0 0 0 1"/>
+		  </material>
+		</visual>
+	</link>
+	<joint name="base_left_wheel_joint" type="continuous">
+		<parent link="base"/>
+		<child link="left_front_wheel"/>
+		<origin rpy="1.57075 0 0" xyz="1 1.0 0.4"/>
+		<axis xyz="0 0 1" />
+	</joint>
+	<link name="right_back_wheel">
+		<visual>
+		  <geometry>
+			<cylinder length="0.5" radius="0.5"/>
+		  </geometry>
+		  
+		  <material name="black">
+		  	<color rgba="0 0 0 1"/>
+		  </material>
+		</visual>
+	</link>
+	<joint name="right_back_wheel_joint" type="continuous">
+		<parent link="base"/>
+		<child link="right_back_wheel"/>
+		<origin rpy="1.57075 0 0" xyz="-1.0 -1.0 0.4"/>
+		<axis xyz="0 0 1" />
+	</joint>
+	<link name="left_back_wheel">
+		<visual>
+		  <geometry>
+			<cylinder length="0.5" radius="0.5"/>
+		  </geometry>
+		  
+		  <material name="black">
+		  	<color rgba="0 0 0 1"/>
+		  </material>
+		</visual>
+	</link>
+	<joint name="left_back_wheel_joint" type="continuous">
+		<parent link="base"/>
+		<child link="left_back_wheel"/>
+		<origin rpy="1.57075 0 0" xyz="-1.0 1.0 0.4"/>
+		<axis xyz="0 0 1" />
+	</joint>
+
+
+        <link name="base_footprint">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.001 0.001 0.001" />
+                </geometry>
+            </visual>
+        </link>     
+
+        <joint name="base_footprint_joint" type="fixed">
+            <origin xyz="0 0 0.003" rpy="0 0 0" />        
+            <parent link="base_footprint"/>
+            <child link="base" />
+        </joint>
+
+
+</robot>

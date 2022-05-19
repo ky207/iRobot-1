@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>  
+    <arg name="model" default="$(find xacro)/xacro --inorder '$(find smart_robot)/xacro/ibot.xacro'" />
+    <arg name="gui" default="true" />
+
+    <param name="robot_description" command="$(arg model)" />
+    <param name="use_gui" value="$(arg gui)"/>
+
+
+    <!-- joy node 
+    <node  respawn="true" pkg="joy" type="joy_node" name="joy_node" >
+       <param name="dev" type="string" value="/dev/input/js2"/>  
+       <param name="deadzone" value="0.12" />
+    </node-->>
+    
+    <!-- joy_contorl node >
+    <param name="arm1_button" value="0" type="int"/>
+    <param name="arm2_button" value="1" type="int"/>
+    <param name="arm3_button" value="2" type="int"/>
+    <param name="start_button" value="5" type="int"/>
+    <param name="axis_linear" value="1" type="int"/>
+    <param name="axis_angular" value="0" type="int"/>
+    <param name="scale_linear" value="2" type="double"/>
+    <param name="scale_angular" value="2" type="double"/>
+    <node name="joy_control"  pkg="smart_robot" type="joy_control"  output="screen" /-->  
+
+    <!--node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" /-->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find smart_robot)/xacro/robot.rviz" required="true" />
+
+
+    <!--运行gazebo仿真环境-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+          <arg name="world_name" value="$(find smart_robot)/world/map.world"/>
+    </include>      	
+
+
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -model mrobot -param robot_description"/> 
+
+</launch>
+

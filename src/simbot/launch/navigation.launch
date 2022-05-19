@@ -1,0 +1,46 @@
+<launch>
+    <!--运行gazebo仿真环境-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+          <arg name="world_name" value="$(find smart_robot)/world/map.world"/>
+    </include>      	
+  
+    <!--机器人参数设置-->
+    <arg name="model" default="$(find xacro)/xacro --inorder '$(find simbot)/urdf/xacro/robot.xacro'" />
+     
+    <!--robot_description 参数名称是参数服务器预先设定好的，不能改变-->
+    <param name="robot_description" command="$(arg model)" />
+
+    <!-- 运行joint_state_publisher节点，发布机器人的关节状态  -->
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+
+    <!-- 运行robot_state_publisher节点，发布tf  -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <!-- 在gazebo中加载机器人模型-->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -model mrobot -param robot_description"/> 
+
+    <!-- 运行rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find simbot)/launch/nav.rviz" required="true" />
+
+    <!-- pointcloud to scan -->
+    <include file="$(find simbot)/launch/point2scan.launch" />  
+
+    <!-- 设置地图的配置文件 -->
+    <arg name="map" default="map.yaml" />
+
+    <!-- 运行地图服务器，并且加载设置的地图-->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find simbot)/map/map.yaml"/>
+
+    <!-- 运行move_base节点 -->
+    <include file="$(find simbot)/launch/move_base.launch"/>
+
+    <!-- 启动AMCL节点 -->
+    <include file="$(find simbot)/launch/amcl.launch" />
+
+    <!-- 对于虚拟定位，需要设置一个/odom与/map之间的静态坐标变换 >
+    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 100" /-->
+
+  
+</launch>
+

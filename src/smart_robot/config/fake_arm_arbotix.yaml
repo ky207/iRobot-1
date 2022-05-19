@@ -1,0 +1,15 @@
+source: myrobot_arm.yaml
+baud: 1000000   #与实际有关，虚拟仿真时可以不用管
+rate: 100	#与实际有关，虚拟仿真时可以不用管
+port: /dev/ttyUSB0
+read_rate: 15       #与实际有关，虚拟仿真时可以不用管
+write_rate: 25      #与实际有关，虚拟仿真时可以不用管
+joints: {
+    joint0: {id: 1, max_angle: 135, min_angle: -135, max_speed: 90},
+    joint1: {id: 2, max_angle: 135, min_angle: -135, max_speed: 90},
+    joint2: {id: 3, max_angle: 135, min_angle: -135, max_speed: 90},
+}
+controllers: {
+    arm_controller: {type: follow_controller, joints: [joint0, joint1, joint2], action_name: arm_controller/follow_joint_trajectory, onboard: False }
+}
+

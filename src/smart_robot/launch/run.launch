@@ -1,0 +1,17 @@
+<launch>  
+    <arg name="model" />  
+    <param name="robot_description" textfile="$(find smart_robot)/urdf/robot.urdf" />   
+    <param name="use_gui" value="false"/>  
+
+    <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
+        <rosparam file="$(find smart_robot)/config/fake_mrobot_arbotix.yaml" command="load" />
+        <param name="sim" value="true"/>
+    </node>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="my_static_transform_publisher" args="0 0 0 0 0 0 odom rslidar" />
+
+    <node name="joint_control" pkg="smart_robot" type="joint_control" />  
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find smart_robot)/urdf/rviz.rviz" required="true" />
+</launch>
+

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<robot name="ibot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- PROPERTY LIST -->
+    <xacro:property name="M_PI" value="3.1415926"/>
+    <xacro:property name="arm_size" value="0.05 0.05 0.2" />
+    <xacro:property name="arm1_pos" value="0 0 0.1" />
+    <xacro:property name="arm2_pos" value="0 0 0.1" />
+    <xacro:property name="arm3_pos" value="0 0 0.1" />
+    <xacro:property name="joint1_pos" value="-0.1 0 0.1" />
+    <xacro:property name="joint2_pos" value="0 0 0.2" />
+    <xacro:property name="joint3_pos" value="0 0 0.2" />
+
+
+
+    <!-- Defining the colors used in this robot -->
+    <material name="orange">
+        <color rgba="1 0.648 0 1"/>
+    </material>
+    <material name="red">
+        <color rgba="1 0 0 1"/>
+    </material>
+    <material name="green">
+        <color rgba="0 1 0 1"/>
+    </material>
+    <material name="blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+
+    <!-- Macro for arm -->
+    <xacro:macro name="arm" params="armname position parentarm jointtype jointpos colour">
+	    <link name="${armname}">
+	      <visual>
+		<geometry>
+		  <box size="${arm_size}"/>
+		</geometry>		
+		<material name="${colour}" />	
+		<origin rpy="0 0 0" xyz="${position}"/>        
+	      </visual>
+	    </link>
+	 
+	    <joint name="joint_base_${armname}" type="${jointtype}">
+	      <parent link="${parentarm}"/>
+	      <child link="${armname}"/>
+	      <origin rpy="0 0 0" xyz="${jointpos}"/>
+              <axis xyz="0 1 0"/> 
+	      <limit effort="300" velocity="1" lower="${-M_PI}" upper="${M_PI}"/>
+	    </joint>
+    </xacro:macro>
+
+
+
+    <!-- Macro for robot arm -->
+    <xacro:macro name="ibot_arm"> 
+	    <xacro:arm armname="arm1" position="${arm1_pos}" parentarm="base_link" jointtype="continuous" jointpos="${joint1_pos}" colour="orange"/>
+	    <xacro:arm armname="arm2" position="${arm2_pos}" parentarm="arm1" jointtype="continuous" jointpos="${joint2_pos}" colour="green"/>
+	    <xacro:arm armname="arm3" position="${arm3_pos}" parentarm="arm2" jointtype="continuous" jointpos="${joint3_pos}" colour="blue"/>
+    </xacro:macro>
+</robot>
+

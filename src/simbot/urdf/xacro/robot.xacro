@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find simbot)/urdf/xacro/robot_base.xacro" />
+    <xacro:include filename="$(find simbot)/urdf/xacro/robot_camera.xacro" />
+    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>   
+    <xacro:include filename="$(find simbot)/urdf/xacro/robot_lidar.xacro"/>   
+    <!--xacro:include filename="$(find realsense_ros_gazebo)/xacro/depthcam.xacro"/-->
+
+
+
+    <xacro:property name="camera_offset_x" value="0.17" />
+    <xacro:property name="camera_offset_y" value="0.0" />
+    <xacro:property name="camera_offset_z" value="0.10" />
+    <xacro:property name="lidar_offset_x" value="0.17" />
+    <xacro:property name="lidar_offset_y" value="0.0" />
+    <xacro:property name="lidar_offset_z" value="0.16" />
+
+    <xacro:arg name="gpu" default="false"/>
+    <xacro:property name="gpu" value="$(arg gpu)" />
+    <xacro:arg name="organize_cloud" default="false"/>
+    <xacro:property name="organize_cloud" value="$(arg organize_cloud)" />
+
+    <xacro:mbot_base_gazebo/>
+
+    <!-- Camera -->
+    <joint name="camera_joint" type="fixed">
+        <origin xyz="${camera_offset_x} ${camera_offset_y} ${camera_offset_z}" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="camera_link"/>
+    </joint>
+
+    <xacro:usb_camera prefix="camera"/>
+
+    <!-- VLP-16 lidar-->
+    <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+         <origin xyz="0 0 0.4" rpy="0 0 0" />
+    </xacro:VLP-16>
+
+    <!-- HOKUYO lidar>
+    <joint name="lidar_joint" type="fixed">
+        <origin xyz="${lidar_offset_x} ${lidar_offset_y} ${lidar_offset_z}" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="hokuyo_link"/>
+    </joint>
+    <xacro:hokuyo_lidar prefix="lidar"/-->
+
+
+    <!-- realsense d435>
+    <xacro:realsense_d435 sensor_name="d435" parent_link="base_link" rate="10">
+        <origin rpy="0 0 0 " xyz="0.0 0 0.5"/>
+    </xacro:realsense_d435 -->
+
+
+</robot>
+
